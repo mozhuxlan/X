@@ -1,10 +1,12 @@
-#include "Socket.h"
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
+#include "Socket.h"
+#include "EventMgr.h"
+
 
 CBaseSocket::CBaseSocket() : m_fd(-1)
 {}
@@ -16,6 +18,11 @@ CBaseSocket::~CBaseSocket()
 		return;
 	}
 	close(m_fd);
+}
+
+int CBaseSocket::GetFd()
+{
+	return m_fd;
 }
 
 
@@ -51,25 +58,34 @@ int CServerSocket::Init(const char *host, int port)
 	return 0;
 }
 
-int CServerSocket::Send()
+int CServerSocket::Send(CEventMgr *em)
 {
 	return -1;
 }
 
-int CServerSocket::Read()
+int CServerSocket::Read(CEventMgr *em)
 {
-	struct sockaddr_in si;
-	socklen_t socklen = sizeof(struct sockaddr);
-	int cfd = accept(m_fd, (struct sockaddr *)&si, &socklen);
-	if(-1 == cfd)
+	while(1)
 	{
-		if(EAGAIN == errno || EINTR == errno)
+		struct sockaddr_in si;
+		socklen_t socklen = sizeof(struct sockaddr);
+		int cfd = accept(m_fd, (struct sockaddr *)&si, &socklen);
+		if(-1 == cfd)
 		{
-			return 0;
+			if(EAGAIN == errno || EINTR == errno)
+			{
+				break;
+			}
+			return -1;
 		}
-		return -1;
+		CClientSocket *s = new CClientSocket(cfd);
+		if(0 != em->AddEvent(cfd, s, EV_READ | EV_WRITE))
+		{
+			delete s;
+			return -1;
+		}
 	}
-	return cfd;
+	return 0;
 }
 
 int CClientSocket::Init(const char *host, int port)
@@ -96,7 +112,7 @@ int CClientSocket::Init(const char *host, int port)
 	return 0;
 }
 
-int CClientSocket::Read()
+int CClientSocket::Read(CEventMgr *em)
 {
 	char buf[1024] = {0};
 	int n = recv(m_fd, buf, 1024, 0);
@@ -106,12 +122,14 @@ int CClientSocket::Read()
 		{
 			return 0;
 		}
+		em->DelEvent(m_fd);
 		return -1;
 	}
+	printf("[%d] say : %s\n", m_fd, buf);
 	return 0;
 }
 
-int CClientSocket::Send()
+int CClientSocket::Send(CEventMgr *em)
 {
 	return 0;
 }

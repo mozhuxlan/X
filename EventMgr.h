@@ -3,6 +3,8 @@
 
 
 #include "Event.h"
+#include <map>
+#include "Socket.h"
 
 #define STATUS_RUNNING	0x01
 #define STATUS_STOP		0x02
@@ -17,13 +19,20 @@ public:
 	CEventMgr(const CEventMgr &rhs) = delete;
 	CEventMgr &operator=(const CEventMgr &rhs) = delete;
 
-public:
+private:
 	int Init();
-	void Run();
+
+public:
+	int Run();
+	int InitServer(const char *host, int port);
+	int AddEvent(int fd, int events);
+	int AddEvent(int fd, CBaseSocket *s, int events);
+	int DelEvent(int fd);
 
 private:
 	CBaseEvent *m_event;
 	int m_status;
+	std::map<int, CBaseSocket *> m_sockets;
 };
 
 #endif

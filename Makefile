@@ -3,7 +3,7 @@ CPPFLAGS=-g -Wall
 INC=
 SRC=$(wildcard *.cc)
 OBJ=$(patsubst %.cc, %.o, $(SRC))
-LIBS=-pthread
+LIBS=-lpthread
 STD=c++11
 TARGET=main
 all:$(OBJ)
