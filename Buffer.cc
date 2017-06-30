@@ -103,3 +103,35 @@ const char *CBuffer::Peek()
 {
 	return m_data + m_begin;
 }
+
+
+#if __cplusplus >= 201103L
+CBuffer::CBuffer(CBuffer &&rhs)
+{
+	m_capacity = rhs.m_capacity;
+	m_begin = rhs.m_begin;
+	m_end = rhs.m_end;
+	m_data = rhs.m_data;
+	rhs.m_data = NULL;
+	rhs.m_capacity = 0;
+	rhs.m_begin = 0;
+	rhs.m_end = 0;
+}
+
+CBuffer &CBuffer::operator=(CBuffer &&rhs)
+{
+	if(&rhs == this)
+	{
+		return *this;
+	}
+	m_capacity = rhs.m_capacity;
+	m_begin = rhs.m_begin;
+	m_end = rhs.m_end;
+	m_data = rhs.m_data;
+	rhs.m_data = NULL;
+	rhs.m_capacity = 0;
+	rhs.m_begin = 0;
+	rhs.m_end = 0;
+	return *this;
+}
+#endif

@@ -8,15 +8,19 @@ public:
 	~CBuffer();
 	CBuffer(const CBuffer &rhs);
 	CBuffer &operator=(const CBuffer &rhs);
+#if __cplusplus >= 201103L
+	CBuffer(CBuffer &&rhs);
+	CBuffer &operator=(CBuffer &&rhs);
+#endif
 
 private:
 	void Expand(int n);
 
 public:
+	int Size();
 	void Push(const char *str, int n);
 	void Remove(int n);
 	void Clear();
-	int Size();
 	bool Empty();
 	const char *Peek();
 
