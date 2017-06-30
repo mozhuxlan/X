@@ -21,7 +21,7 @@ CEpollEvent::~CEpollEvent()
 	close(m_efd);
 }
 
-int CEpollEvent::Init()
+int CEpollEvent::InitEvent()
 {
 	m_efd = epoll_create(10);
 	if(-1 == m_efd)
@@ -61,7 +61,7 @@ int CEpollEvent::ModEvent(int fd, int events)
 	return epoll_ctl(m_efd, EPOLL_CTL_MOD, fd, &ev);
 }
 
-int CEpollEvent::DelEvent(int fd, int events)
+int CEpollEvent::DelEvent(int fd)
 {
 	return epoll_ctl(m_efd, EPOLL_CTL_DEL, fd, NULL);
 }

@@ -36,11 +36,11 @@ public:
 	~CEpollEvent();
 
 public:
-	virtual int InitEvent();
-	virtual int AddEvent(int fd, int events);
-	virtual int ModEvent(int fd, int events);
-	virtual int DelEvent(int fd);
-	virtual int LoopEvent(int timeout, std::map<int, int> &events);
+	virtual int InitEvent() override;
+	virtual int AddEvent(int fd, int events) override;
+	virtual int ModEvent(int fd, int events) override;
+	virtual int DelEvent(int fd) override;
+	virtual int LoopEvent(int timeout, std::map<int, int> &events) override;
 
 private:
 	int m_efd;
@@ -54,11 +54,11 @@ public:
 	~CSelectEvent();
 
 public:
-	virtual int InitEvent();
-	virtual int AddEvent(int fd, int events);
-	virtual int ModEvent(int fd, int events);
-	virtual int DelEvent(int fd);
-	virtual int LoopEvent(int timeout, std::map<int, int> &events);
+	virtual int InitEvent() override;
+	virtual int AddEvent(int fd, int events) override;
+	virtual int ModEvent(int fd, int events) override;
+	virtual int DelEvent(int fd) override;
+	virtual int LoopEvent(int timeout, std::map<int, int> &events) override;
 
 private:
 	fd_set m_rfd;
