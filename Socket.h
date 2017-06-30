@@ -13,7 +13,7 @@ public:
 public:
 	virtual int Init(const char *host, int port) = 0;
 	virtual int Send() = 0;
-	virtual int Send(const char *str, size_t n) = 0;
+	virtual int Send(const char *str, int n) = 0;
 	virtual int Read() = 0;
 
 public:
@@ -33,7 +33,7 @@ public:
 public:
 	int Init(const char *host, int port) override;
 	int Send() override;
-	int Send(const char *str, size_t n) override;
+	int Send(const char *str, int n) override;
 	int Read() override;
 };
 
@@ -47,7 +47,7 @@ public:
 public:
 	int Init(const char *host, int port) override;
 	int Send() override;
-	int Send(const char *str, size_t n) override;
+	int Send(const char *str, int n) override;
 	int Read() override;
 
 private:

@@ -64,7 +64,7 @@ int CEventMgr::Run()
 			{
 				if(0 == j->second->Send())
 				{
-					ModEvent(i->first, EV_READ);
+					m_event->ModEvent(i->first, EV_READ);
 				}
 			}
 		}

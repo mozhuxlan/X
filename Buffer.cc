@@ -42,7 +42,7 @@ CBuffer &CBuffer::operator=(const CBuffer &rhs)
 	return *this;
 }
 
-void CBuffer::Expand(size_t n)
+void CBuffer::Expand(int n)
 {
 	char *ptr = (char *)malloc(n);
 	memcpy(ptr, m_data + m_begin, m_end - m_begin);
@@ -53,7 +53,7 @@ void CBuffer::Expand(size_t n)
 	m_data = ptr;
 }
 
-void CBuffer::Push(const char *str, size_t n)
+void CBuffer::Push(const char *str, int n)
 {
 	if(m_capacity - m_end > n)
 	{
@@ -75,7 +75,7 @@ void CBuffer::Push(const char *str, size_t n)
 
 }
 
-void CBuffer::Remove(size_t n)
+void CBuffer::Remove(int n)
 {
 	m_begin += n;
 	if(m_begin > m_end)
@@ -94,7 +94,7 @@ void CBuffer::Clear()
 	m_begin = m_end = 0;
 }
 
-size_t CBuffer::Size()
+int CBuffer::Size()
 {
 	return m_end - m_begin;
 }

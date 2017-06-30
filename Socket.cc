@@ -63,7 +63,7 @@ int CServerSocket::Send()
 	return 0;
 }
 
-int CServerSocket::Send(const char *str, size_t n)
+int CServerSocket::Send(const char *str, int n)
 {
 	return 0;
 }
@@ -135,7 +135,7 @@ int CClientSocket::Send()
 	return m_sb.Size();
 }
 
-int CClientSocket::Send(const char *str, size_t sz)
+int CClientSocket::Send(const char *str, int sz)
 {
 	if(m_sb.Empty())
 	{

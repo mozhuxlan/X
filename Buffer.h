@@ -1,8 +1,6 @@
 #ifndef __BUFFER_H__
 #define __BUFFER_H__
 
-#include <stdio.h>
-
 class CBuffer
 {
 public:
@@ -12,21 +10,21 @@ public:
 	CBuffer &operator=(const CBuffer &rhs);
 
 private:
-	void Expand(size_t n);
+	void Expand(int n);
 
 public:
-	void Push(const char *str, size_t n);
-	void Remove(size_t n);
+	void Push(const char *str, int n);
+	void Remove(int n);
 	void Clear();
-	size_t Size();
+	int Size();
 	bool Empty();
 	const char *Peek();
 
 private:
 	char *m_data;
-	size_t m_begin;
-	size_t m_end;
-	size_t m_capacity;
+	int m_begin;
+	int m_end;
+	int m_capacity;
 };
 
 #endif
