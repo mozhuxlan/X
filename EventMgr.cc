@@ -80,6 +80,14 @@ int CEventMgr::AddEvent(int fd, CBaseSocket *s, int events)
 
 int CEventMgr::DelEvent(int fd)
 {
+	std::map<int, CBaseSocket *>::iterator itr = m_sockets.find(fd);
+	if(itr == m_sockets.end())
+	{
+		return 0;
+	}
+	m_event->DelEvent(fd);
+	delete itr->second;
+	m_sockets.erase(itr);
 	return 0;
 }
 
