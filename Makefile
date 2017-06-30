@@ -1,16 +1,11 @@
-CC=g++
-CPPFLAGS=-g -Wall
-INC=
-SRC=$(wildcard *.cc)
-OBJ=$(patsubst %.cc, %.o, $(SRC))
-LIBS=-lpthread
-STD=c++11
-TARGET=main
-all:$(OBJ)
-	@$(CC) $(CPPFLAGS) $(OBJ) -o $(TARGET) $(LIBS)
+include xx.mk
 
-%.o:%.cc
-	$(CC) -c $(CPPFLAGS) $< -o $@ -std=$(STD)
+all:
+	@cd ${BASE_DIR} && make
+	@cd ${SERVER_DIR} && make
 
 clean:
-	@rm -rf $(OBJ) $(TARGET)
+	@cd ${BASE_DIR} && make clean
+	@cd ${SERVER_DIR} && make clean
+	@rm -rf ${LIB_OUTPUT_DIR}/*
+	@rm -rf ${BIN_OUTPUT_DIR}/${TARGET}
