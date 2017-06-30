@@ -1,7 +1,7 @@
 /*
 !xx.mk
 !Makefile
-!base
-!server
-!*.cc
-!*.h
+!base/*.cc
+!base/*.h
+!server/*.cc
+!server/*.h
