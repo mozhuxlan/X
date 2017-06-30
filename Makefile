@@ -1,6 +1,7 @@
 include xx.mk
 
 all:
+	mkdir -p bin/libs
 	@cd ${BASE_DIR} && make
 	@cd ${SERVER_DIR} && make
 

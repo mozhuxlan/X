@@ -1,7 +1,9 @@
 /*
+!README.md
 !xx.mk
 !Makefile
 !base/*.cc
 !base/*.h
 !server/*.cc
 !server/*.h
+!3rd/*
