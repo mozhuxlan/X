@@ -1,0 +1,9 @@
+PROJECT_ROOT_DIR=/Users/wenfeng/code/X
+BIN_OUTPUT_DIR=${PROJECT_ROOT_DIR}/bin
+LIB_OUTPUT_DIR=${BIN_OUTPUT_DIR}/libs
+
+BASE_DIR=${PROJECT_ROOT_DIR}/base
+SERVER_DIR=${PROJECT_ROOT_DIR}/server
+
+PROG_LIBS=-lbase -lpthread
+TARGET=server

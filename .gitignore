@@ -1,4 +1,7 @@
-*
-!.cc
-!.h
-!.mk
+/*
+!xx.mk
+!Makefile
+!base
+!server
+!*.cc
+!*.h
