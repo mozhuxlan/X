@@ -150,9 +150,9 @@ int CSelectEvent::DelEvent(int fd)
 
 int CSelectEvent::LoopEvent(int timeout, std::map<int, int> &events)
 {
-	struct timeval tv;
-	tv.tv_sec = timeout;
-	tv.tv_usec = 0;
+	//struct timeval tv;
+	//tv.tv_sec = timeout;
+	//tv.tv_usec = 0;
 	fd_set rfd, wfd;
 	rfd = m_rfd;
 	wfd = m_wfd;
