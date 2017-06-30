@@ -41,11 +41,31 @@ int CEventMgr::Run()
 			}
 			if(i->second & EV_READ)
 			{
-				j->second->Read(this);
+				int ret = j->second->Read();
+				switch(ret)
+				{
+					case -1:
+						DelSocket(j->second);
+						break;
+					case 0:
+						break;
+					default:
+						{
+							CClientSocket *s = new CClientSocket(ret);
+							if(AddSocket(s, EV_READ) != 0)
+							{
+								delete s;
+							}
+						}
+						break;
+				}
 			}
 			if(i->second & EV_WRITE)
 			{
-				j->second->Send(this);
+				if(0 == j->second->Send())
+				{
+					ModEvent(i->first, EV_READ);
+				}
 			}
 		}
 	}
@@ -62,24 +82,20 @@ CEventMgr::~CEventMgr()
 	delete m_event;
 }
 
-int CEventMgr::AddEvent(int fd, int events)
+int CEventMgr::AddSocket(CBaseSocket *s, int events)
 {
-	m_event->AddEvent(fd, events);
-	return 0;
-}
-
-int CEventMgr::AddEvent(int fd, CBaseSocket *s, int events)
-{
-	if(0 != AddEvent(fd, events))
+	int fd = s->GetFd();
+	if(m_event->AddEvent(fd, events) != 0)
 	{
 		return -1;
 	}
-	m_sockets[fd] = s;
+	m_sockets.insert(std::make_pair(fd, s));
 	return 0;
 }
 
-int CEventMgr::DelEvent(int fd)
+int CEventMgr::DelSocket(CBaseSocket *s)
 {
+	int fd = s->GetFd();
 	std::map<int, CBaseSocket *>::iterator itr = m_sockets.find(fd);
 	if(itr == m_sockets.end())
 	{
@@ -103,12 +119,10 @@ int CEventMgr::InitServer(const char *host, int port)
 		delete s;
 		return -1;
 	}
-	int fd = s->GetFd();
-	if(0 != AddEvent(fd, EV_READ))
+	if(0 != AddSocket(s, EV_READ))
 	{
 		delete s;
 		return -1;
 	}
-	m_sockets.insert(std::make_pair(fd, s));
 	return 0;
 }

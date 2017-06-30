@@ -5,7 +5,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include "Socket.h"
-#include "EventMgr.h"
+#include <stdio.h>
 
 
 CBaseSocket::CBaseSocket() : m_fd(-1)
@@ -58,34 +58,30 @@ int CServerSocket::Init(const char *host, int port)
 	return 0;
 }
 
-int CServerSocket::Send(CEventMgr *em)
+int CServerSocket::Send()
 {
-	return -1;
+	return 0;
 }
 
-int CServerSocket::Read(CEventMgr *em)
+int CServerSocket::Send(const char *str, size_t n)
 {
-	while(1)
-	{
-		struct sockaddr_in si;
-		socklen_t socklen = sizeof(struct sockaddr);
-		int cfd = accept(m_fd, (struct sockaddr *)&si, &socklen);
-		if(-1 == cfd)
-		{
-			if(EAGAIN == errno || EINTR == errno)
-			{
-				break;
-			}
-			return -1;
-		}
-		CClientSocket *s = new CClientSocket(cfd);
-		if(0 != em->AddEvent(cfd, s, EV_READ | EV_WRITE))
-		{
-			delete s;
-			return -1;
-		}
-	}
 	return 0;
+}
+
+int CServerSocket::Read()
+{
+	struct sockaddr_in si;
+	socklen_t socklen = sizeof(struct sockaddr);
+	int cfd = accept(m_fd, (struct sockaddr *)&si, &socklen);
+	if(-1 == cfd)
+	{
+		if(EAGAIN == errno || EINTR == errno)
+		{
+			return 0;
+		}
+		return -1;
+	}
+	return cfd;
 }
 
 int CClientSocket::Init(const char *host, int port)
@@ -112,7 +108,7 @@ int CClientSocket::Init(const char *host, int port)
 	return 0;
 }
 
-int CClientSocket::Read(CEventMgr *em)
+int CClientSocket::Read()
 {
 	char buf[1024] = {0};
 	int n = recv(m_fd, buf, 1024, 0);
@@ -122,14 +118,41 @@ int CClientSocket::Read(CEventMgr *em)
 		{
 			return 0;
 		}
-		em->DelEvent(m_fd);
 		return -1;
 	}
-	printf("[%d] say : %s\n", m_fd, buf);
+	m_rb.Push(buf, n);
 	return 0;
 }
 
-int CClientSocket::Send(CEventMgr *em)
+int CClientSocket::Send()
 {
-	return 0;
+	int n = send(m_fd, m_sb.Peek(), m_sb.Size(), 0);
+	if(-1 == n)
+	{
+		return -1;
+	}
+	m_sb.Remove(n);
+	return m_sb.Size();
+}
+
+int CClientSocket::Send(const char *str, size_t sz)
+{
+	if(m_sb.Empty())
+	{
+		int n = send(m_fd, str, sz, 0);
+		if(-1 == n)
+		{
+			return -1;
+		}
+		if(n == sz)
+		{
+			return 0;
+		}
+		m_sb.Push(str + n, sz - n);
+	}
+	else
+	{
+		m_sb.Push(str, sz);
+	}
+	return m_sb.Size();
 }

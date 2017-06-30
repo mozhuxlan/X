@@ -1,7 +1,7 @@
 #ifndef __SOCKET_H__
 #define __SOCKET_H__
 
-class CEventMgr;
+#include "Buffer.h"
 
 class CBaseSocket
 {
@@ -12,8 +12,9 @@ public:
 
 public:
 	virtual int Init(const char *host, int port) = 0;
-	virtual int Send(CEventMgr *em) = 0;
-	virtual int Read(CEventMgr *em) = 0;
+	virtual int Send() = 0;
+	virtual int Send(const char *str, size_t n) = 0;
+	virtual int Read() = 0;
 
 public:
 	int GetFd();
@@ -31,8 +32,9 @@ public:
 
 public:
 	int Init(const char *host, int port) override;
-	int Send(CEventMgr *em) override;
-	int Read(CEventMgr *em) override;
+	int Send() override;
+	int Send(const char *str, size_t n) override;
+	int Read() override;
 };
 
 class CClientSocket : public CBaseSocket
@@ -44,8 +46,13 @@ public:
 
 public:
 	int Init(const char *host, int port) override;
-	int Send(CEventMgr *em) override;
-	int Read(CEventMgr *em) override;
+	int Send() override;
+	int Send(const char *str, size_t n) override;
+	int Read() override;
+
+private:
+	CBuffer m_rb;
+	CBuffer m_sb;
 };
 
 

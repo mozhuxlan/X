@@ -25,9 +25,8 @@ private:
 public:
 	int Run();
 	int InitServer(const char *host, int port);
-	int AddEvent(int fd, int events);
-	int AddEvent(int fd, CBaseSocket *s, int events);
-	int DelEvent(int fd);
+	int AddSocket(CBaseSocket *s, int events);
+	int DelSocket(CBaseSocket *s);
 
 private:
 	CBaseEvent *m_event;
