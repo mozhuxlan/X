@@ -49,7 +49,10 @@ void CBuffer::Expand(int n)
 	m_end -= m_begin;
 	m_begin = 0;
 	m_capacity = n;
-	free(m_data);
+	if(m_data != nullptr)
+	{
+		free(m_data);
+	}
 	m_data = ptr;
 }
 
@@ -66,11 +69,13 @@ void CBuffer::Push(const char *str, int n)
 		m_end -= m_begin;
 		m_begin = 0;
 		memcpy(m_data + m_end, str, n);
+		m_end += n;
 	}
 	else
 	{
 		Expand(m_capacity * 2 + n);
 		memcpy(m_data + m_end, str, n);
+		m_end += n;
 	}
 
 }
@@ -94,16 +99,15 @@ void CBuffer::Clear()
 	m_begin = m_end = 0;
 }
 
-int CBuffer::Size()
+int CBuffer::Size() const
 {
 	return m_end - m_begin;
 }
 
-const char *CBuffer::Peek()
+const char *CBuffer::Peek() const
 {
 	return m_data + m_begin;
 }
-
 
 #if __cplusplus >= 201103L
 CBuffer::CBuffer(CBuffer &&rhs)

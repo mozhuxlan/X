@@ -17,12 +17,12 @@ private:
 	void Expand(int n);
 
 public:
-	int Size();
+	int Size() const;
 	void Push(const char *str, int n);
 	void Remove(int n);
 	void Clear();
 	bool Empty();
-	const char *Peek();
+	const char *Peek() const;
 
 private:
 	char *m_data;
