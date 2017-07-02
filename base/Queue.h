@@ -1,5 +1,5 @@
-#ifndef __MQ_H__
-#define __MQ_H__
+#ifndef __QUEUE_H__
+#define __QUEUE_H__
 
 #include "Message.h"
 #include <list>
