@@ -61,7 +61,7 @@ void CBuffer::Push(const char *str, int n)
 	if(m_capacity - m_end > n)
 	{
 		memcpy(m_data + m_end, str, n);
-		return;
+		m_end += n;
 	}
 	else if(m_capacity + m_begin - m_end > n)
 	{
