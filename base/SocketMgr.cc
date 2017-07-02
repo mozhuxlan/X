@@ -1,10 +1,10 @@
-#include "EventMgr.h"
 #include <stdio.h>
+#include "SocketMgr.h"
 
-CEventMgr::CEventMgr() : m_event(NULL), m_status(STATUS_STOP)
+CSocketMgr::CSocketMgr() : m_status(STATUS_STOP), m_event(NULL)
 {}
 
-int CEventMgr::Init()
+int CSocketMgr::Init()
 {
 #ifdef __linux__
 	m_event = new CEpollEvent;
@@ -19,7 +19,7 @@ int CEventMgr::Init()
 	return 0;
 }
 
-int CEventMgr::Run()
+int CSocketMgr::Run()
 {
 	while(1)
 	{
@@ -72,17 +72,24 @@ int CEventMgr::Run()
 	return 0;
 }
 
-CEventMgr::~CEventMgr()
+int CSocketMgr::Stop()
+{
+	m_status = STATUS_STOP; 
+	return 0;
+}
+
+CSocketMgr::~CSocketMgr()
 {
 	for(std::map<int, CBaseSocket *>::const_iterator itr = m_sockets.begin(); itr != m_sockets.end(); ++itr)
 	{
+		m_event->DelEvent(itr->second->GetFd());
 		delete itr->second;
 	}
 	m_sockets.clear();
 	delete m_event;
 }
 
-int CEventMgr::AddSocket(CBaseSocket *s, int events)
+int CSocketMgr::AddSocket(CBaseSocket *s, int events)
 {
 	int fd = s->GetFd();
 	if(m_event->AddEvent(fd, events) != 0)
@@ -93,7 +100,7 @@ int CEventMgr::AddSocket(CBaseSocket *s, int events)
 	return 0;
 }
 
-int CEventMgr::DelSocket(CBaseSocket *s)
+int CSocketMgr::DelSocket(CBaseSocket *s)
 {
 	int fd = s->GetFd();
 	std::map<int, CBaseSocket *>::iterator itr = m_sockets.find(fd);
@@ -107,7 +114,7 @@ int CEventMgr::DelSocket(CBaseSocket *s)
 	return 0;
 }
 
-int CEventMgr::InitServer(const char *host, int port)
+int CSocketMgr::InitServer(const char *host, int port)
 {
 	if(Init() != 0)
 	{

@@ -120,7 +120,6 @@ int CClientSocket::Read()
 		}
 		return -1;
 	}
-	m_rb.Push(buf, n);
 	return 0;
 }
 

@@ -1,9 +1,12 @@
 /*
+!.gitignore
 !README.md
 !xx.mk
 !Makefile
-!base/*.cc
-!base/*.h
-!server/*.cc
-!server/*.h
+!base/
+base/*.o
+!server/
+server/*.o
+bin/server
+!3rd/
 !3rd/*

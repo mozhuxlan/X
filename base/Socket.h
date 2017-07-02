@@ -51,7 +51,6 @@ public:
 	int Read() override;
 
 private:
-	CBuffer m_rb;
 	CBuffer m_sb;
 };
 

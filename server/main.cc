@@ -1,13 +1,12 @@
-#include "EventMgr.h"
-
+#include "SocketMgr.h"
 
 int main()
 {
-	CEventMgr evMgr;
-	if(-1 == evMgr.InitServer("0.0.0.0", 9057))
+	CSocketMgr sm;
+	if(-1 == sm.InitServer("0.0.0.0", 9057))
 	{
 		return 0;
 	}
-	evMgr.Run();
+	sm.Run();
 	return 0;
 }
