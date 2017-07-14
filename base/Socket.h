@@ -52,7 +52,7 @@ public:
 
 private:
 	CBuffer m_sb;
+	CBuffer m_rb;
 };
-
 
 #endif

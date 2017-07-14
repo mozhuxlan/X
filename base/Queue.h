@@ -25,6 +25,4 @@ private:
 	std::condition_variable m_cond;
 	std::list<CMessage *> m_list;
 };
-
-
 #endif
