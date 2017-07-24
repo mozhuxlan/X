@@ -3,10 +3,6 @@
 !README.md
 !xx.mk
 !Makefile
-!base/
-base/*.o
-!server/
-server/*.o
-bin/server
-!3rd/
-!3rd/*
+!*.h
+!*.cc
+

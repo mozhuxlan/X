@@ -1,12 +1,15 @@
-include xx.mk
+CXX=g++
+CXXFLAGS=-g -Wall -O2
+LIBS=-lpthread
+SRC=$(wildcard *.cc)
+OBJS=$(patsubst %.cc, %.o, ${SRC})
+TARGET=server
 
-all:
-	@mkdir -p bin/libs
-	@cd ${BASE_DIR} && make
-	@cd ${SERVER_DIR} && make
+$(TARGET):$(OBJS)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(TARGET) $(LIBS)
+
+%.o:%.cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@ -std=c++11
 
 clean:
-	@cd ${BASE_DIR} && make clean
-	@cd ${SERVER_DIR} && make clean
-	@rm -rf ${LIB_OUTPUT_DIR}/*
-	@rm -rf ${BIN_OUTPUT_DIR}/${TARGET}
+	rm -rf $(TARGET) $(OBJS)
