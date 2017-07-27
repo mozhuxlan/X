@@ -1,7 +1,7 @@
 #ifndef __SERVICE_MGR_H__
 #define __SERVICE_MGR_H__
 
-#include "agent_service.h"
+#include "service.h"
 #include <map>
 
 class CServiceMgr

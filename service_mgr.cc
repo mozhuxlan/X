@@ -1,4 +1,6 @@
 #include "service_mgr.h"
+#include "agent_service.h"
+#include "db_service.h"
 #include <limits.h>
 
 CServiceMgr::~CServiceMgr()
@@ -36,6 +38,8 @@ CService *CServiceMgr::CreateService(E_SERVICE_TYPE type, const char *param)
 		case E_SERVICE_TYPE::AGENT:
 			s = new CAgentService(serviceId);
 			break;
+		case E_SERVICE_TYPE::DB:
+			s = new CDBService(serviceId);
 		default:
 			return nullptr;
 	}
