@@ -21,7 +21,6 @@ private:
 private:
 	MYSQL *m_handler;
 	std::string m_host;
-	int m_port;
 	std::string m_username;
 	std::string m_passwd;
 	std::string m_db;
