@@ -25,30 +25,30 @@ int CEventMgr::Init()
 	return 0;
 }
 
-int CEventMgr::Start()
+int CEventMgr::Loop(int timeout)
 {
-	while(1)
+	struct epoll_event evs[1024];
+	int ret = epoll_wait(m_fd, evs, 1024, timeout);
+	if(-1 == ret)
 	{
-		struct epoll_event evs[1024];
-		int ret = epoll_wait(m_fd, evs, 1024, -1);
-		if(-1 == ret)
+		return -1;
+	}
+	if(0 == ret)
+	{
+		return 0;
+	}
+	for(int i = 0; i < ret; ++i)
+	{
+		if(evs[i].events & EPOLLIN)
 		{
-			break;
+			ReadEvent(evs[i].data.fd);
 		}
-		int i;
-		for(i = 0; i < ret; ++i)
+		if(evs[i].events & EPOLLOUT)
 		{
-			if(evs[i].events & EPOLLIN)
-			{
-				ReadEvent(evs[i].data.fd);
-			}
-			if(evs[i].events & EPOLLOUT)
-			{
-				WriteEvent(evs[i].data.fd);
-			}
+			WriteEvent(evs[i].data.fd);
 		}
 	}
-	return 0;
+	return ret;
 }
 
 int CEventMgr::CreateSocket(E_SOCKET_TYPE type, const char *host, int port)

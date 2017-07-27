@@ -24,9 +24,14 @@ public:
 	void Stop();
 	void Destroy();
 
+public:
+	static void *StartSocket(void *arg);
+	static void *StartLoop(void *arg);
+
 private:
 	E_SERVER_STATE m_state;
 	CEventMgr m_event;
+	pthread_t m_threads[20];
 };
 
 #endif

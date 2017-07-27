@@ -31,7 +31,7 @@ private:
 
 public:
 	int Init();
-	int Start();
+	int Loop(int timeout);
 
 private:
 	int m_fd;
