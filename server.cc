@@ -1,6 +1,7 @@
 #include "server.h"
 #include <pthread.h>
 #include <functional>
+#include <unistd.h>
 
 CServer::CServer()
 {}
@@ -20,6 +21,8 @@ int CServer::Init(const CConfig &cfg)
 	{
 		return -1;
 	}
+
+	// TODO create service
 
 	m_state = E_SERVER_STATE::RUN;
 	return 0;
@@ -56,7 +59,7 @@ void *CServer::StartLoop(void *arg)
 		{
 			break;
 		}
-
+		sleep(1);
 	}
 	return NULL;
 }

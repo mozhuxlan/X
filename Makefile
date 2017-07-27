@@ -1,15 +1,19 @@
 CXX=g++
 CXXFLAGS=-g -Wall -O2
-LIBS=-lpthread
+LIBS=-lpthread -ldl
 SRC=$(wildcard *.cc)
 OBJS=$(patsubst %.cc, %.o, ${SRC})
+INC=-I3rd/mysql/include
+DEPENDENCY=3rd/mysql/lib/libmysqlclient.a
 TARGET=server
 
+
+
 $(TARGET):$(OBJS)
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $(TARGET) $(LIBS)
+	$(CXX) $(CXXFLAGS) $(OBJS) $(DEPENDENCY) -o $(TARGET) $(LIBS)
 
 %.o:%.cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@ -std=c++11
+	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@ -std=c++11
 
 clean:
 	rm -rf $(TARGET) $(OBJS)

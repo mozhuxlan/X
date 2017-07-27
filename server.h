@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include "event.h"
+#include "service_mgr.h"
 
 enum class E_SERVER_STATE
 {
@@ -31,6 +32,7 @@ public:
 private:
 	E_SERVER_STATE m_state;
 	CEventMgr m_event;
+	CServiceMgr m_service;
 	pthread_t m_threads[20];
 };
 
