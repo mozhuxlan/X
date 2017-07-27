@@ -40,10 +40,16 @@ CService *CServiceMgr::CreateService(E_SERVICE_TYPE type, const char *param)
 			break;
 		case E_SERVICE_TYPE::DB:
 			s = new CDBService(serviceId);
+			break;
 		default:
 			return nullptr;
 	}
-	s->Init(param);
+	if(0 != s->Init(param))
+	{
+		delete s;
+		return nullptr;
+	}
+	m_services.insert(std::make_pair(serviceId, s));
 	return s;
 }
 
