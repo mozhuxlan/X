@@ -24,8 +24,7 @@ int CDBService::ParseParam(const char *param)
 	char *ptr2 = strchr(ptr1 + 1, ' ');
 	m_passwd.assign(ptr1 + 1, ptr2);
 
-	char *ptr3 = strchr(ptr2 + 1, ' ');
-	m_db.assign(ptr2 + 1, ptr3);
+	m_db.assign(ptr2 + 1);
 	return 0;
 }
 

@@ -16,14 +16,16 @@ int CServer::Init(const CConfig &cfg)
 	{
 		return -1;
 	}
-
 	if(m_event.CreateSocket(E_SOCKET_TYPE::SERVER, "0.0.0.0", 9057) != 0)
 	{
 		return -1;
 	}
-
-	// TODO create service
-
+	int i;
+	const char *ptr = nullptr;
+	for(i = 0; i < 10; ++i)
+	{
+		m_service.CreateService(E_SERVICE_TYPE::DB, ptr);
+	}
 	m_state = E_SERVER_STATE::RUN;
 	return 0;
 }
