@@ -21,6 +21,7 @@ int CServer::Init(const CConfig &cfg)
 		return -1;
 	}
 	int i;
+	// Test 
 	const char *ptr = "host username passwd db";
 	for(i = 0; i < 10; ++i)
 	{
