@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-g -Wall -O2
+CXXFLAGS=-g -Wall 
 LIBS=-lpthread -ldl
 SRC=$(wildcard *.cc)
 OBJS=$(patsubst %.cc, %.o, ${SRC})
