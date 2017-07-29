@@ -21,7 +21,7 @@ int CServer::Init(const CConfig &cfg)
 		return -1;
 	}
 	int i;
-	const char *ptr = nullptr;
+	const char *ptr = "host username passwd db";
 	for(i = 0; i < 10; ++i)
 	{
 		m_service.CreateService(E_SERVICE_TYPE::DB, ptr);
